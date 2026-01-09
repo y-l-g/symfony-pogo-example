@@ -1,0 +1,24 @@
+{
+	frankenphp
+	pogo_queue {
+		 worker public/queue-worker.php
+	}
+	admin off
+	debug
+}
+
+:8000 {
+	root public
+
+	@phpRoute {
+		not file {path}
+	}
+	rewrite @phpRoute index.php
+
+	@frontController path index.php
+	php @frontController
+
+	file_server {
+		hide *.php
+	}
+}
